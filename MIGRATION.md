@@ -1,6 +1,54 @@
-##Upgrade Notes
+## Upgrade Notes
 
 ### Library
+
+### core v4.x.x -> 5.x.x
+
+- All `with*` methods of the `IconicsDrawable` were replaced with properties
+- Raw setters are now direct (int color, string, pixel values), all other properties were moved into extension functions to clean up the `IconicsDrawable`
+- The `IconcisDrawable` now depends on the ressources and theme, and tries to eliminate dependency on the `Context`
+  - All according methods were refactored to take Resources and Theme
+- Use `IconcisDrawable` via XML for API 24+
+- `.apply` is specialized and will not invalidate the drawable until all changes were made
+
+### core v3.x.x -> 4.x.x
+Now libray is kotlin-first
+
+* Font files
+  * Font's store now based on default way to store fonts. (moved from common assets to font-specific resource assets)
+* `Iconics`
+  * No context from now required. We get the application context via ContentProvider
+* `Iconics.IconicsBuilder`
+  * Renamed to `Iconics.Builder`
+  * Removed `ctx(Context)` method
+* `IconicsDrawable`
+  * Replaced all `*Res(int)`, `*Px(int)`, `*Dp(int)` method to use `IconicsSize` and `IconicsColor` classes instead
+  * Constants `TOOLBAR_ICON_SIZE` and `TOOLBAR_ICON_PADDING` moved to `IconicsSize`
+  * All getters now have property-syntax
+  * All producer-provided methods from [Android-Iconics Kt](https://github.com/zTrap/Android-Iconics-Kt) are included in class and can return nullable value (value will be set only when not null)
+  * `enableShadowSupport(View)` moved to `IconicsUtils`
+* All `utils` classes and typeface libraries now can not be instantiated
+* `ITypeface`
+  * Method `getTypeface(Context)` replaced with field `rawTypeface`
+  * Automatically retrieves raw font from file by provided `fontRes` (see [GenericFont.kt](/library-core/src/main/java/com/mikepenz/iconics/typeface/GenericFont.kt) if You wont to use old scheme)
+
+#### Community Material Icons > v2.7.94
+* With the update of the community material icons, the amount of icons exceeded the allowed length of an enum. Thus it was split up in `CommunityMaterial.Icon` and `CommunityMaterial.Icon2` if you use the icons via code, please use the depending enum.
+  * The icons were split apart by the letter `h`. All icons starting from `a` to `g` are in the `CommunityMaterial.Icon` enum, all icons from `h` to `z` are in the `CommunityMaterial.Icon2` enum.
+
+#### v3.1.x
+* Upgraded the library to use `androidX` dependencies. This means your project will need to depend on `androidX` dependencies too. If you still use appcompat please consider using a version older than v3.1.x. 
+* Further details about migrating to androidX and a overview can be found on the official docs. https://developer.android.com/topic/libraries/support-library/refactor
+
+#### 2.9.5
+* the attributes for the `IconicsMenuInflaterUtil` start now with `ico_` instead of `iiv_`
+* the `IconicsMenuInflaterUtil` was moved into the `core` module to simplify code
+
+#### 2.9.0
+* The library-core was split apart into **iconics-core** and **iconics-views** to slim down the **iconics-core** and allow more advanced UI features in the **iconics-views**
+* the core dep stays the same: `compile "com.mikepenz:iconics-core:2.9.0@aar"`
+* for all UI widgets add `compile "com.mikepenz:iconics-views:2.9.0@aar"`
+
 #### 2.8.0
 * Dropping support for API < 14. New `MinSdkVersion` is now 14
 
